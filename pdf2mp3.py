@@ -98,10 +98,22 @@ def clean_text(text: str) -> str:
     Returns:
         Cleaned text
     """
+    # Remove common PDF metadata lines like "Title: ..." or "Author: ..."
+    cleaned_lines = []
+    for line in text.splitlines():
+        if re.match(
+            r"^(Title|Author|Creator|Producer|CreationDate|ModDate|Subject|Keywords|Date)\s*:",
+            line.strip(),
+        ):
+            continue
+        cleaned_lines.append(line)
+
+    text = "\n".join(cleaned_lines)
+
     # Remove multiple newlines
-    text = re.sub(r'\n\s*\n', '\n', text)
+    text = re.sub(r"\n\s*\n", "\n", text)
     # Remove special characters that might cause issues
-    text = re.sub(r'[^\w\s.,!?-]', '', text)
+    text = re.sub(r"[^\w\s.,!?-]", "", text)
     return text.strip()
 
 
