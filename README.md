@@ -2,6 +2,8 @@
 
 A Python script that converts PDF files to MP3 audio using macOS's built-in text-to-speech engine.
 
+I was frustrated when I wanted to listen to the Deep Research results within ChatGPT, since all of the "free text to speech" providers severely capped my characters or hours. So now we can all listen to whatever we want.
+
 ## Requirements
 
 - Python 3.6 or higher
