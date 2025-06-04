@@ -29,6 +29,28 @@ def check_and_install_dependencies() -> None:
 check_and_install_dependencies()
 check_ffmpeg()
 
+def check_say() -> bool:
+    """Check if the macOS 'say' command is available and prepare a fallback.
+
+    Returns:
+        True if ``say`` is available, otherwise False.
+    """
+    if shutil.which("say"):
+        return True
+
+    print("Warning: 'say' command not found. Falling back to gTTS for speech synthesis.")
+
+    try:
+        import gtts  # type: ignore[import]
+    except Exception:
+        print("Installing gTTS for fallback...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "gTTS"])
+
+    return False
+
+# Determine whether the native 'say' command is available
+HAS_SAY = check_say()
+
 from PyPDF2 import PdfReader
 from pydub import AudioSegment
 
@@ -94,40 +116,41 @@ def chunk_text(text: str, max_chars: int = 10000) -> List[str]:
     return chunks
 
 def text_to_speech(text: str, output_path: Path) -> None:
-    """Convert text to speech using macOS's say command.
-    
+    """Convert text to speech using either ``say`` or gTTS.
+
     Args:
         text: Text to convert to speech
         output_path: Path where the MP3 file will be saved
     """
-    # Split text into chunks
+    # Split text into manageable chunks
     chunks = chunk_text(text)
     total_chunks = len(chunks)
-    
-    # Create temporary directory for intermediate files
+
+    # Temporary directory for intermediate files
     with tempfile.TemporaryDirectory() as temp_dir:
         temp_dir_path = Path(temp_dir)
         audio_segments = []
-        
+
         for i, chunk in enumerate(chunks, 1):
             print(f"Processing chunk {i}/{total_chunks}...")
-            
-            # Create temporary file for the chunk
-            chunk_file = temp_dir_path / f"chunk_{i}.txt"
-            chunk_file.write_text(chunk)
-            
-            # Convert chunk to AIFF
-            aiff_path = temp_dir_path / f"chunk_{i}.aiff"
-            subprocess.run(['say', '-f', str(chunk_file), '-o', str(aiff_path)], check=True)
-            
-            # Convert AIFF to AudioSegment
-            audio_segments.append(AudioSegment.from_file(str(aiff_path), format="aiff"))
-        
-        # Combine all audio segments
+
+            if HAS_SAY:
+                # Use macOS say command
+                chunk_file = temp_dir_path / f"chunk_{i}.txt"
+                chunk_file.write_text(chunk)
+                aiff_path = temp_dir_path / f"chunk_{i}.aiff"
+                subprocess.run(["say", "-f", str(chunk_file), "-o", str(aiff_path)], check=True)
+                audio_segments.append(AudioSegment.from_file(str(aiff_path), format="aiff"))
+            else:
+                # Fallback to gTTS
+                from gtts import gTTS  # type: ignore[import]
+                mp3_path = temp_dir_path / f"chunk_{i}.mp3"
+                gTTS(chunk).save(str(mp3_path))
+                audio_segments.append(AudioSegment.from_file(str(mp3_path), format="mp3"))
+
         print("Combining audio segments...")
         final_audio = sum(audio_segments)
-        
-        # Export as MP3
+
         print("Exporting to MP3...")
         final_audio.export(str(output_path), format="mp3")
 
