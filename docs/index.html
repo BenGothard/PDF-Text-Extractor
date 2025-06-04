@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF/Text to MP3</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>PDF/Text to MP3 Converter</h1>
+  <p>Select a PDF or paste text below and click "Convert" to generate an MP3.</p>
+
+  <div class="uploader">
+    <input type="file" id="pdfFile" accept="application/pdf">
+    <textarea id="textInput" placeholder="Or paste text here..."></textarea>
+    <button id="convertBtn">Convert</button>
+  </div>
+
+  <div id="progress"></div>
+  <audio id="audio" controls style="display:none;"></audio>
+  <a id="downloadLink" href="#" download="output.mp3" style="display:none;">Download MP3</a>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
