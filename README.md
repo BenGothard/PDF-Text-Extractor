@@ -17,7 +17,7 @@ python pdf2mp3.py my_document.pdf
 Follow these steps to turn a PDF into an MP3. Make sure Python and FFmpeg are installed on your computer.
 
 1. Click **Code** and choose **Download ZIP** to get the files, or use the page's "Download MP3" button to generate the archive in your browser.
-2. Open the ZIP you downloaded. A new folder appears (your PDF is already inside).
+2. Open the ZIP you downloaded. A new folder appears. Move your PDF into this folder.
 3. Open Command Prompt on Windows or Terminal on Mac and Linux.
 4. Type `cd `, drag the folder into the window, and press **Enter**.
 5. Type `python pdf2mp3.py` and press **Enter**. The script finds the PDF for you.
