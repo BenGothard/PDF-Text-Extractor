@@ -43,6 +43,9 @@ brew install ffmpeg
 
 # Debian/Ubuntu
 sudo apt-get install ffmpeg
+
+# Verify installation
+ffmpeg -version
 ```
 
 ## Usage
@@ -66,7 +69,9 @@ python pdf2mp3.py "My Document.pdf"
 
 The script will:
 1. Convert the PDF to text
-2. Use macOS's text-to-speech engine (or Google Text-to-Speech on other platforms) to create audio
+2. Use your operating system's native text-to-speech engine when available
+   (``say`` on macOS or ``SAPI`` on Windows via ``pyttsx3``) to create audio.
+   If neither is available it falls back to Google Text-to-Speech.
 3. Save the output as an MP3 file (by default next to the input PDF)
    - For example, if your input is `my_document.pdf`, the default output will
      be `my_document.mp3`
@@ -74,7 +79,8 @@ The script will:
 ## Features
 
 - Handles large PDFs by chunking text into manageable segments
-- Uses macOS's high-quality text-to-speech engine when available, with gTTS fallback elsewhere
+- Uses the native text-to-speech engine (``say`` on macOS or ``SAPI`` on Windows)
+  when available, with gTTS as a final fallback
 - Automatically cleans up temporary files
 - Shows progress during conversion
 
@@ -86,12 +92,15 @@ A very small browser interface is included so you can convert files without inst
 https://<username>.github.io/audiobook_maker/
 ```
 
-From there you can upload a PDF or paste text and click **Convert** to generate and download the MP3 directly in your browser. The web app now uses Google's `translate.googleapis.com` endpoint for text-to-speech so it no longer relies on third-party CORS proxies.
+From there you can upload a PDF or paste text and click **Convert** to generate and download the MP3 directly in your browser. When supported your browser's native speech synthesis will be used for playback. If not available the web app falls back to Google's `translate.googleapis.com` endpoint for text-to-speech so it no longer relies on third-party CORS proxies.
 
 
 ## Note
 
-The script uses the macOS `say` command when available but will automatically fall back to Google Text-to-Speech on other operating systems.
+The script now detects your operating system and uses the best available
+text-to-speech backend. macOS systems use the built-in ``say`` command,
+Windows systems use ``pyttsx3``/SAPI, and if neither is available the
+script falls back to Google Text-to-Speech.
 
 ## License
 
