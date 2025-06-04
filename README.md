@@ -1,6 +1,6 @@
 # PDF to MP3 Converter
 
-A Python script that converts PDF files to MP3 audio using macOS's built-in text-to-speech engine.
+A Python script that converts PDF files to MP3 audio using macOS's built-in text-to-speech engine when available, or Google Text-to-Speech on other platforms.
 
 ## 🚀 Quick Start
 
@@ -17,7 +17,7 @@ I was frustrated when I wanted to listen to the Deep Research results within Cha
 ## Requirements
 
 - Python 3.6 or higher
-- macOS (uses the built-in `say` command)
+- macOS is recommended (uses the built-in `say` command when available, with Google Text-to-Speech fallback on other platforms)
 - FFmpeg (required by pydub for audio processing)
 
 ## Installation
@@ -38,7 +38,11 @@ source venv/bin/activate
 
 4. (Alternative) Install FFmpeg if you haven't already:
 ```bash
+# macOS
 brew install ffmpeg
+
+# Debian/Ubuntu
+sudo apt-get install ffmpeg
 ```
 
 ## Usage
@@ -62,7 +66,7 @@ python pdf2mp3.py "My Document.pdf"
 
 The script will:
 1. Convert the PDF to text
-2. Use macOS's text-to-speech engine to create audio
+2. Use macOS's text-to-speech engine (or Google Text-to-Speech on other platforms) to create audio
 3. Save the output as an MP3 file (by default next to the input PDF)
    - For example, if your input is `my_document.pdf`, the default output will
      be `my_document.mp3`
@@ -70,7 +74,7 @@ The script will:
 ## Features
 
 - Handles large PDFs by chunking text into manageable segments
-- Uses macOS's high-quality text-to-speech engine
+- Uses macOS's high-quality text-to-speech engine when available, with gTTS fallback elsewhere
 - Automatically cleans up temporary files
 - Shows progress during conversion
 
@@ -87,7 +91,7 @@ From there you can upload a PDF or paste text and click **Convert** to generate 
 
 ## Note
 
-This script requires macOS as it uses the built-in `say` command for text-to-speech conversion. 
+The script uses the macOS `say` command when available but will automatically fall back to Google Text-to-Speech on other operating systems.
 
 ## License
 
