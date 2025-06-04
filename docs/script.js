@@ -229,6 +229,17 @@ document.addEventListener('DOMContentLoaded', () => {
       rateVal.textContent = rate.value;
     });
   }
+
+  const copyBtn = document.getElementById('copyCmdBtn');
+  const cmdText = document.getElementById('cmdText');
+  if (copyBtn && cmdText && navigator.clipboard) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(cmdText.textContent.trim()).then(() => {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1500);
+      });
+    });
+  }
 });
 
 // Listen to text using browser TTS
