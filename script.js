@@ -36,7 +36,7 @@ function chunkText(text, max = 200) {
 }
 
 async function fetchMP3(chunk) {
-  const url = `https://corsproxy.io/https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-US&q=${encodeURIComponent(chunk)}`;
+  const url = `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-US&q=${encodeURIComponent(chunk)}`;
   try {
     const resp = await fetch(url);
     if (!resp.ok) throw new Error('TTS request failed');
