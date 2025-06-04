@@ -38,10 +38,32 @@ function chunkText(text, max = 200) {
 function speakBrowser(text) {
   if ('speechSynthesis' in window) {
     const utter = new SpeechSynthesisUtterance(text);
+    const select = document.getElementById('voiceSelect');
+    if (select) {
+      const voices = speechSynthesis.getVoices();
+      const voice = voices[parseInt(select.value, 10)];
+      if (voice) utter.voice = voice;
+    }
+    const rateInput = document.getElementById('rateRange');
+    if (rateInput) utter.rate = parseFloat(rateInput.value);
     speechSynthesis.speak(utter);
     return true;
   }
   return false;
+}
+
+function populateVoices() {
+  if (!('speechSynthesis' in window)) return;
+  const select = document.getElementById('voiceSelect');
+  if (!select) return;
+  const voices = speechSynthesis.getVoices();
+  select.innerHTML = '';
+  voices.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${v.name} (${v.lang})`;
+    select.appendChild(opt);
+  });
 }
 
 async function fetchMP3(chunk) {
@@ -145,5 +167,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (pauseBtn && audio) {
     pauseBtn.addEventListener('click', () => audio.pause());
+  }
+
+  populateVoices();
+  if ('speechSynthesis' in window) {
+    speechSynthesis.onvoiceschanged = populateVoices;
+  }
+
+  const rate = document.getElementById('rateRange');
+  const rateVal = document.getElementById('rateValue');
+  if (rate && rateVal) {
+    rate.addEventListener('input', () => {
+      rateVal.textContent = rate.value;
+    });
   }
 });
