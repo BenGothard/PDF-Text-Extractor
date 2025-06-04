@@ -5,7 +5,7 @@ from pathlib import Path
 def check_and_install_dependencies():
     """Check if required packages are installed, install if missing."""
     try:
-        import pypdf
+        import PyPDF2
         import pydub
     except ImportError:
         print("Installing required dependencies...")
@@ -17,7 +17,7 @@ check_and_install_dependencies()
 
 import re
 import itertools
-from pypdf import PdfReader
+from PyPDF2 import PdfReader
 from pydub import AudioSegment
 
 # ... existing code ... 
