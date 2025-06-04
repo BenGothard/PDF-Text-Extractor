@@ -137,8 +137,8 @@ def text_to_speech(text: str, output_path: Path) -> None:
         print("Combining audio segments...")
         final_audio = sum(audio_segments)
 
-        # Export as MP3
-        print("Exporting to MP3...")
+    # Export as MP3
+    print("Exporting to MP3...")
     final_audio.export(str(output_path), format="mp3")
 
 
