@@ -186,7 +186,10 @@ async function handleConvert() {
 
 const convertBtn = document.getElementById('convertBtn');
 if (convertBtn) {
-  convertBtn.addEventListener('click', handleConvert);
+  convertBtn.addEventListener('click', () => {
+    const help = document.getElementById('mp3Help');
+    if (help) help.style.display = help.style.display === 'none' ? 'block' : 'none';
+  });
 }
 
 // Initialize theme toggle and restore saved preference

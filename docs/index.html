@@ -21,6 +21,7 @@
       <button id="extractBtn">Extract PDF Text</button>
       <button id="listenBtn">Listen to Text</button>
       <button id="downloadTextBtn">Download Text</button>
+      <button id="convertBtn">Download MP3</button>
     </div>
   </div>
   <div id="progress"></div>
@@ -29,6 +30,18 @@
     <button id="pauseListenBtn">Pause</button>
     <button id="resumeListenBtn">Resume</button>
     <button id="stopListenBtn">Stop</button>
+  </div>
+
+  <div id="mp3Help" style="display:none;" class="instructions">
+    <h2>How to Generate an MP3</h2>
+    <ol>
+      <li>Download <code>pdf2mp3.py</code> from this repository.</li>
+      <li>Open a terminal in the folder where your PDF lives.</li>
+      <li>Run <code>python pdf2mp3.py yourfile.pdf</code>.</li>
+      <li>The script will create <code>yourfile.mp3</code> using your system's
+      voices.</li>
+    </ol>
+    <p>See the project README for setup instructions if Python or FFmpeg are not installed.</p>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>

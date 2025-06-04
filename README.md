@@ -12,6 +12,12 @@ source venv/bin/activate
 python pdf2mp3.py my_document.pdf
 ```
 
+### Convert a PDF in a Few Steps
+
+1. Place your PDF in the same folder as `pdf2mp3.py`.
+2. Open a terminal and run `python pdf2mp3.py yourfile.pdf`.
+3. You'll get `yourfile.mp3` voiced by your operating system.
+
 I was frustrated when I wanted to listen to the Deep Research results within ChatGPT, since all of the "free text to speech" providers severely capped my characters or hours. So now we can all listen to whatever we want.
 
 ## Requirements
