@@ -72,3 +72,11 @@ The script will:
 ## Note
 
 This script requires macOS as it uses the built-in `say` command for text-to-speech conversion. 
+
+## Testing
+
+Run tests with:
+```bash
+pytest
+```
+
