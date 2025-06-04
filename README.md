@@ -45,7 +45,7 @@ bash setup.sh
 source venv/bin/activate
 ```
 
-3. (Alternative) Manual install: The script will automatically install required Python packages on first run.
+3. (Alternative) Manual install: The script will automatically install required Python packages on first run, even if ``requirements.txt`` isn't present.
 
 4. (Alternative) Install FFmpeg if you haven't already:
 ```bash

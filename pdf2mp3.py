@@ -29,10 +29,13 @@ def check_and_install_dependencies() -> None:
         importlib.import_module("pydub")
     except ImportError:
         print("Installing required dependencies...")
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"]
-        )
-
+        req_file = Path(__file__).with_name("requirements.txt")
+        cmd = [sys.executable, "-m", "pip", "install"]
+        if req_file.exists():
+            cmd.extend(["-r", str(req_file)])
+        else:
+            cmd.extend(["PyPDF2", "pydub", "gTTS", "pyttsx3"])
+        subprocess.check_call(cmd)
         print("Dependencies installed successfully!")
 
 
