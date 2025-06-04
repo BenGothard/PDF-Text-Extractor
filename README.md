@@ -72,3 +72,7 @@ The script will:
 ## Note
 
 This script requires macOS as it uses the built-in `say` command for text-to-speech conversion. 
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
