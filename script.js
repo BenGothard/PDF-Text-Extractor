@@ -38,11 +38,18 @@ async function textToMP3(text) {
   const chunks = chunkText(text);
   const buffers = [];
   const progress = document.getElementById('progress');
+  const progressBar = document.getElementById('progressBar');
+  progressBar.max = chunks.length;
+  progressBar.value = 0;
+  progressBar.style.display = 'block';
   for (let i = 0; i < chunks.length; i++) {
     progress.textContent = `Fetching audio ${i + 1} / ${chunks.length}...`;
+    progressBar.value = i;
     buffers.push(await fetchMP3(chunks[i]));
+    progressBar.value = i + 1;
   }
   progress.textContent = 'Combining...';
+  progressBar.value = progressBar.max;
   const blob = new Blob(buffers, { type: 'audio/mpeg' });
   const url = URL.createObjectURL(blob);
   document.getElementById('audio').style.display = 'block';
@@ -51,11 +58,15 @@ async function textToMP3(text) {
   dl.href = url;
   dl.style.display = 'inline-block';
   progress.textContent = 'Done!';
+  progressBar.style.display = 'none';
 }
 
 async function handleConvert() {
   const file = document.getElementById('pdfFile').files[0];
   let text = document.getElementById('textInput').value.trim();
+  const progressBar = document.getElementById('progressBar');
+  progressBar.style.display = 'none';
+  progressBar.value = 0;
   if (file) {
     document.getElementById('progress').textContent = 'Extracting text from PDF...';
     text += '\n' + await extractTextFromPDF(file);
