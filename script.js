@@ -35,6 +35,15 @@ function chunkText(text, max = 200) {
   return chunks;
 }
 
+function speakBrowser(text) {
+  if ('speechSynthesis' in window) {
+    const utter = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(utter);
+    return true;
+  }
+  return false;
+}
+
 async function fetchMP3(chunk) {
   const url = `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-US&q=${encodeURIComponent(chunk)}`;
   try {
@@ -101,7 +110,12 @@ async function handleConvert() {
     return;
   }
   log('Starting conversion');
-  await textToMP3(text, outputName);
+  const spoken = speakBrowser(text);
+  if (!spoken) {
+    await textToMP3(text, outputName);
+  } else {
+    log('Used browser speech synthesis.');
+  }
 }
 
 document.getElementById('convertBtn').addEventListener('click', handleConvert);

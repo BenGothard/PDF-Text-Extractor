@@ -11,6 +11,7 @@ from typing import List
 import shutil
 import importlib
 import argparse
+import platform
 
 
 def check_ffmpeg() -> None:
@@ -40,17 +41,31 @@ check_and_install_dependencies()
 check_ffmpeg()
 
 
-def check_say() -> bool:
-    """Check if the macOS 'say' command is available and prepare a fallback.
+def determine_tts_engine() -> str:
+    """Determine which text-to-speech backend to use.
+
+    Preference order:
+    1. macOS ``say`` command
+    2. Windows SAPI via ``pyttsx3``
+    3. Google Text-to-Speech
 
     Returns:
-        True if ``say`` is available, otherwise False.
+        One of ``"say"``, ``"pyttsx3"``, or ``"gtts"``.
     """
+
     if shutil.which("say"):
-        return True
+        return "say"
+
+    if platform.system() == "Windows":
+        try:
+            importlib.import_module("pyttsx3")
+        except Exception:
+            print("Installing pyttsx3 for Windows TTS...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "pyttsx3"])
+        return "pyttsx3"
 
     print(
-        "Warning: 'say' command not found. Falling back to gTTS for "
+        "Warning: native TTS not found. Falling back to gTTS for "
         "speech synthesis."
     )
 
@@ -60,11 +75,10 @@ def check_say() -> bool:
         print("Installing gTTS for fallback...")
         subprocess.check_call([sys.executable, "-m", "pip", "install", "gTTS"])
 
-    return False
+    return "gtts"
 
 
-# Determine whether the native 'say' command is available
-HAS_SAY = check_say()
+TTS_ENGINE = determine_tts_engine()
 
 from PyPDF2 import PdfReader  # noqa: E402
 from pydub import AudioSegment  # noqa: E402
@@ -147,7 +161,10 @@ def chunk_text(text: str, max_chars: int = 10000) -> List[str]:
 
 
 def text_to_speech(text: str, output_path: Path) -> None:
-    """Convert text to speech using either ``say`` or gTTS.
+    """Convert text to speech using the best available engine.
+
+    Preference order is macOS ``say``, Windows ``pyttsx3`` (SAPI),
+    and finally Google Text-to-Speech.
 
     Args:
         text: Text to convert to speech
@@ -165,7 +182,7 @@ def text_to_speech(text: str, output_path: Path) -> None:
         for i, chunk in enumerate(chunks, 1):
             print(f"Processing chunk {i}/{total_chunks}...")
 
-            if HAS_SAY:
+            if TTS_ENGINE == "say":
                 # Use macOS say command
                 chunk_file = temp_dir_path / f"chunk_{i}.txt"
                 chunk_file.write_text(chunk)
@@ -177,8 +194,16 @@ def text_to_speech(text: str, output_path: Path) -> None:
                 audio_segments.append(
                     AudioSegment.from_file(str(aiff_path), format="aiff")
                 )
+            elif TTS_ENGINE == "pyttsx3":
+                import pyttsx3  # type: ignore
+                engine = pyttsx3.init()
+                wav_path = temp_dir_path / f"chunk_{i}.wav"
+                engine.save_to_file(chunk, str(wav_path))
+                engine.runAndWait()
+                audio_segments.append(
+                    AudioSegment.from_file(str(wav_path), format="wav")
+                )
             else:
-                # Fallback to gTTS
                 from gtts import gTTS  # type: ignore[import]
                 mp3_path = temp_dir_path / f"chunk_{i}.mp3"
                 gTTS(chunk).save(str(mp3_path))
