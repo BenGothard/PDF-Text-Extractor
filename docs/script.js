@@ -224,3 +224,81 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Listen to text using browser TTS
+let currentUtterance = null;
+function listenToText() {
+  if (!('speechSynthesis' in window)) {
+    alert('Browser speech synthesis not supported.');
+    return;
+  }
+  const text = document.getElementById('textInput').value.trim();
+  if (!text) {
+    alert('Please extract a PDF or enter some text.');
+    return;
+  }
+  if (currentUtterance) {
+    window.speechSynthesis.cancel();
+    currentUtterance = null;
+  }
+  const utter = new SpeechSynthesisUtterance(text);
+  currentUtterance = utter;
+  utter.onend = () => {
+    document.getElementById('listenControls').style.display = 'none';
+    currentUtterance = null;
+  };
+  window.speechSynthesis.speak(utter);
+  document.getElementById('listenControls').style.display = 'flex';
+}
+
+function pauseListen() {
+  if (currentUtterance) window.speechSynthesis.pause();
+}
+function resumeListen() {
+  if (currentUtterance) window.speechSynthesis.resume();
+}
+function stopListen() {
+  if (currentUtterance) {
+    window.speechSynthesis.cancel();
+    currentUtterance = null;
+    document.getElementById('listenControls').style.display = 'none';
+  }
+}
+
+// Download text as .txt file
+function downloadText() {
+  const text = document.getElementById('textInput').value.trim();
+  if (!text) {
+    alert('No text to download.');
+    return;
+  }
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'extracted_text.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Extract PDF text and put in textarea
+async function handleExtract() {
+  const file = document.getElementById('pdfFile').files[0];
+  if (!file) {
+    alert('Please select a PDF file.');
+    return;
+  }
+  log('Extracting text from PDF...');
+  const text = await extractTextFromPDF(file);
+  document.getElementById('textInput').value = text;
+  log('Extraction complete.');
+}
+
+document.getElementById('extractBtn').addEventListener('click', handleExtract);
+document.getElementById('listenBtn').addEventListener('click', listenToText);
+document.getElementById('downloadTextBtn').addEventListener('click', downloadText);
+document.getElementById('pauseListenBtn').addEventListener('click', pauseListen);
+document.getElementById('resumeListenBtn').addEventListener('click', resumeListen);
+document.getElementById('stopListenBtn').addEventListener('click', stopListen);

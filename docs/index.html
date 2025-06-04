@@ -8,29 +8,27 @@
 </head>
 <body>
   <button id="themeToggle" class="theme-toggle">Toggle Dark Mode</button>
-  <h1>PDF/Text to MP3 Converter</h1>
-  <p>Select a PDF or paste text below and click "Convert" to generate an MP3. When complete a <strong>Download</strong> button appears so you can save the file, which is named after the uploaded PDF.</p>
-
+  <h1>PDF/Text to Speech & Text Downloader</h1>
+  <p>
+    <strong>Listen:</strong> Use your browser's voice to listen to the text below.<br>
+    <strong>Download:</strong> Save the extracted or pasted text as a .txt file.<br>
+    <strong>Want an MP3?</strong> Use the provided Python script (<code>pdf2mp3.py</code>) on your computer for downloadable audio using your native OS voices.
+  </p>
   <div class="uploader">
     <input type="file" id="pdfFile" accept="application/pdf">
     <textarea id="textInput" placeholder="Or paste text here..."></textarea>
-    <label for="voiceSelect">Voice:</label>
-    <select id="voiceSelect"></select>
-    <label for="rateRange">Rate: <span id="rateValue">1</span>x</label>
-    <input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="1">
     <div class="button-row">
-      <button id="convertBtn">Convert</button>
-      <a id="downloadLink" href="#" download="output.mp3" class="button-link" style="display:none;">Download MP3</a>
+      <button id="extractBtn">Extract PDF Text</button>
+      <button id="listenBtn">Listen to Text</button>
+      <button id="downloadTextBtn">Download Text</button>
     </div>
   </div>
-
   <div id="progress"></div>
-  <progress id="progressBar" value="0" max="100" style="display:none;"></progress>
   <pre id="terminal" class="terminal"></pre>
-  <audio id="audio" controls style="display:none;"></audio>
-  <div id="playbackControls" class="button-row" style="display:none;">
-    <button id="playBtn">Play</button>
-    <button id="pauseBtn">Pause</button>
+  <div id="listenControls" class="button-row" style="display:none;">
+    <button id="pauseListenBtn">Pause</button>
+    <button id="resumeListenBtn">Resume</button>
+    <button id="stopListenBtn">Stop</button>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
