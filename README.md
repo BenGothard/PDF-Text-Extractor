@@ -92,9 +92,7 @@ A very small browser interface is included so you can convert files without inst
 https://<username>.github.io/audiobook_maker/
 ```
 
-From there you can upload a PDF or paste text and click **Convert** to generate the audio. A **Download** button appears next to the convert button once the file is ready so you can save the MP3 locally. When supported your browser's native speech synthesis will be used for playback. If not available the web app falls back to Google's `translate.googleapis.com` endpoint for text-to-speech so it no longer relies on third-party CORS proxies.
-
-The web app also lets you pick from available browser voices and control the speech rate before converting.
+From there you can upload a PDF or paste text and click **Convert** to generate the audio. A **Download** button appears next to the convert button once the file is ready so you can save the result locally. The page first attempts to capture audio using your browser's built‑in speech synthesis so the same voice can be downloaded. If that isn't possible it falls back to Google's `translate.googleapis.com` service. Press **Play** after conversion to listen in your browser.
 
 
 ## Note
