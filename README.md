@@ -43,11 +43,15 @@ brew install ffmpeg
 
 ## Usage
 
-Run the script by providing the path to your PDF file as an argument:
+Run the script by providing the path to your PDF file. You can optionally
+specify an output path for the generated MP3 using ``-o`` or ``--output``:
 
 ```bash
 # If the PDF is in the current directory:
 python pdf2mp3.py my_document.pdf
+
+# Specify a custom output location:
+python pdf2mp3.py my_document.pdf -o /path/to/output/book.mp3
 
 # If the PDF is in another directory:
 python pdf2mp3.py /path/to/your/document.pdf
@@ -59,8 +63,9 @@ python pdf2mp3.py "My Document.pdf"
 The script will:
 1. Convert the PDF to text
 2. Use macOS's text-to-speech engine to create audio
-3. Save the output as an MP3 file in the same directory as the input PDF
-   - For example, if your input is `my_document.pdf`, the output will be `my_document.mp3`
+3. Save the output as an MP3 file (by default next to the input PDF)
+   - For example, if your input is `my_document.pdf`, the default output will
+     be `my_document.mp3`
 
 ## Features
 

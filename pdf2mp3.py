@@ -10,6 +10,7 @@ import tempfile
 from typing import List
 import shutil
 import importlib
+import argparse
 
 
 def check_ffmpeg() -> None:
@@ -194,11 +195,18 @@ def text_to_speech(text: str, output_path: Path) -> None:
 
 def main() -> None:
     """Main function to convert PDF to MP3."""
-    if len(sys.argv) != 2:
-        print("Usage: python pdf2mp3.py <pdf_file>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Convert a PDF to an MP3 audiobook")
+    parser.add_argument("pdf", type=Path, help="Path to the PDF file to convert")
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=Path,
+        help="Path where the MP3 will be saved. Defaults to <pdf>.mp3",
+    )
 
-    pdf_path = Path(sys.argv[1])
+    args = parser.parse_args()
+
+    pdf_path = args.pdf
     if not pdf_path.exists():
         print(f"Error: File {pdf_path} does not exist")
         sys.exit(1)
@@ -215,7 +223,7 @@ def main() -> None:
         text = clean_text(text)
 
         # Convert to speech
-        output_path = pdf_path.with_suffix('.mp3')
+        output_path = args.output if args.output else pdf_path.with_suffix('.mp3')
         text_to_speech(text, output_path)
 
         print(f"Conversion complete! Output saved to: {output_path}")
