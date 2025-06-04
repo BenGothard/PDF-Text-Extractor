@@ -9,19 +9,21 @@
 <body>
   <button id="themeToggle" class="theme-toggle">Toggle Dark Mode</button>
   <h1>PDF/Text to MP3 Converter</h1>
-  <p>Select a PDF or paste text below and click "Convert" to generate an MP3. The downloaded file will be named after the PDF you upload.</p>
+  <p>Select a PDF or paste text below and click "Convert" to generate an MP3. When complete a <strong>Download</strong> button appears so you can save the file, which is named after the uploaded PDF.</p>
 
   <div class="uploader">
     <input type="file" id="pdfFile" accept="application/pdf">
     <textarea id="textInput" placeholder="Or paste text here..."></textarea>
-    <button id="convertBtn">Convert</button>
+    <div class="button-row">
+      <button id="convertBtn">Convert</button>
+      <a id="downloadLink" href="#" download="output.mp3" class="button-link" style="display:none;">Download MP3</a>
+    </div>
   </div>
 
   <div id="progress"></div>
   <progress id="progressBar" value="0" max="100" style="display:none;"></progress>
   <pre id="terminal" class="terminal"></pre>
   <audio id="audio" controls style="display:none;"></audio>
-  <a id="downloadLink" href="#" download="output.mp3" style="display:none;">Download MP3</a>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
