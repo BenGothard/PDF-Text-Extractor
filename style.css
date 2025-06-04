@@ -1,0 +1,23 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1em;
+}
+
+.uploader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.uploader input,
+.uploader textarea,
+.uploader button {
+  font-size: 1rem;
+  width: 100%;
+}
+
+textarea {
+  min-height: 150px;
+}
