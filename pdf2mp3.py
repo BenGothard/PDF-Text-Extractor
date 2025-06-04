@@ -220,8 +220,15 @@ def text_to_speech(text: str, output_path: Path) -> None:
 
 def main() -> None:
     """Main function to convert PDF to MP3."""
-    parser = argparse.ArgumentParser(description="Convert a PDF to an MP3 audiobook")
-    parser.add_argument("pdf", type=Path, help="Path to the PDF file to convert")
+    parser = argparse.ArgumentParser(
+        description="Convert a PDF to an MP3 audiobook"
+    )
+    parser.add_argument(
+        "pdf",
+        nargs="?",
+        type=Path,
+        help="Path to the PDF file to convert (default: first PDF in current folder)",
+    )
     parser.add_argument(
         "-o",
         "--output",
@@ -232,6 +239,18 @@ def main() -> None:
     args = parser.parse_args()
 
     pdf_path = args.pdf
+    if pdf_path is None:
+        pdfs = list(Path(".").glob("*.pdf"))
+        if len(pdfs) == 1:
+            pdf_path = pdfs[0]
+            print(f"Using detected PDF: {pdf_path}")
+        elif len(pdfs) == 0:
+            print("Error: No PDF found in the current folder. Please specify a file.")
+            sys.exit(1)
+        else:
+            print("Error: Multiple PDFs found. Please specify which one to use.")
+            sys.exit(1)
+
     if not pdf_path.exists():
         print(f"Error: File {pdf_path} does not exist")
         sys.exit(1)
