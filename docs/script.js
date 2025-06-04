@@ -202,10 +202,22 @@ function downloadZip() {
   URL.revokeObjectURL(url);
 }
 
+function setCmdPath() {
+  const cmdText = document.getElementById('cmdText');
+  if (!cmdText) return;
+  const ua = (navigator.userAgent || navigator.platform || '').toLowerCase();
+  if (ua.includes('win')) {
+    cmdText.textContent = 'python %USERPROFILE%\\Downloads\\audiobook_maker\\pdf2mp3.py';
+  } else {
+    cmdText.textContent = 'python ~/Downloads/audiobook_maker/pdf2mp3.py';
+  }
+}
+
 const convertBtn = document.getElementById('convertBtn');
 if (convertBtn) {
   convertBtn.addEventListener('click', () => {
     downloadZip();
+    setCmdPath();
     const help = document.getElementById('mp3Help');
     if (help) help.style.display = 'block';
   });
@@ -248,6 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
       rateVal.textContent = rate.value;
     });
   }
+
+  setCmdPath();
 
   const copyBtn = document.getElementById('copyCmdBtn');
   const cmdText = document.getElementById('cmdText');
