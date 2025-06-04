@@ -71,9 +71,13 @@ The script will:
 
 ## GitHub Pages Web App
 
-A minimal web interface is available in the `docs/` folder. When hosted with GitHub Pages it lets you upload a PDF or paste text and converts it to an MP3 using the browser.
+A very small browser interface is included so you can convert files without installing anything. Enable GitHub Pages for the repository (either from the root or the `docs/` folder) and open:
 
-Open `https://<username>.github.io/audiobook_maker/` after enabling GitHub Pages for the repository.
+```
+https://<username>.github.io/audiobook_maker/
+```
+
+From there you can upload a PDF or paste text and click **Convert** to generate and download the MP3 directly in your browser.
 
 
 ## Note
