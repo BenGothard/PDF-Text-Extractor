@@ -2,6 +2,16 @@
 
 A Python script that converts PDF files to MP3 audio using macOS's built-in text-to-speech engine.
 
+## 🚀 Quick Start
+
+```bash
+git clone <your-repo-url>
+cd audiobook_maker
+bash setup.sh
+source venv/bin/activate
+python pdf2mp3.py my_document.pdf
+```
+
 I was frustrated when I wanted to listen to the Deep Research results within ChatGPT, since all of the "free text to speech" providers severely capped my characters or hours. So now we can all listen to whatever we want.
 
 ## Requirements
@@ -18,9 +28,15 @@ git clone <your-repo-url>
 cd audiobook_maker
 ```
 
-2. The script will automatically install required Python packages on first run.
+2. Run the setup script (recommended):
+```bash
+bash setup.sh
+source venv/bin/activate
+```
 
-3. Install FFmpeg if you haven't already:
+3. (Alternative) Manual install: The script will automatically install required Python packages on first run.
+
+4. (Alternative) Install FFmpeg if you haven't already:
 ```bash
 brew install ffmpeg
 ```
