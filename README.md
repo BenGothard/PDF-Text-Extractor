@@ -69,6 +69,13 @@ The script will:
 - Automatically cleans up temporary files
 - Shows progress during conversion
 
+## GitHub Pages Web App
+
+A minimal web interface is available in the `docs/` folder. When hosted with GitHub Pages it lets you upload a PDF or paste text and converts it to an MP3 using the browser.
+
+Open `https://<username>.github.io/audiobook_maker/` after enabling GitHub Pages for the repository.
+
+
 ## Note
 
 This script requires macOS as it uses the built-in `say` command for text-to-speech conversion. 
