@@ -48,3 +48,17 @@ textarea {
   margin-top: 0.5em;
   display: none;
 }
+
+.terminal {
+  background: #000;
+  color: #0f0;
+  font-family: monospace;
+  padding: 0.5em;
+  margin-top: 0.5em;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+body.dark .terminal {
+  background: #222;
+}

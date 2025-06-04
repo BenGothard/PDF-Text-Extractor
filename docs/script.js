@@ -11,6 +11,14 @@ async function extractTextFromPDF(file) {
   return text;
 }
 
+function log(msg) {
+  const term = document.getElementById('terminal');
+  if (term) {
+    term.textContent += msg + '\n';
+    term.scrollTop = term.scrollHeight;
+  }
+}
+
 function chunkText(text, max = 200) {
   const sentences = text.match(/[^.!?]+[.!?\n]*/g) || [];
   const chunks = [];
@@ -29,9 +37,14 @@ function chunkText(text, max = 200) {
 
 async function fetchMP3(chunk) {
   const url = `https://corsproxy.io/https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-US&q=${encodeURIComponent(chunk)}`;
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error('TTS request failed');
-  return new Uint8Array(await resp.arrayBuffer());
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('TTS request failed');
+    return new Uint8Array(await resp.arrayBuffer());
+  } catch (err) {
+    log(`Error fetching audio: ${err}`);
+    throw err;
+  }
 }
 
 async function textToMP3(text, outputName = 'output.mp3') {
@@ -42,13 +55,17 @@ async function textToMP3(text, outputName = 'output.mp3') {
   progressBar.max = chunks.length;
   progressBar.value = 0;
   progressBar.style.display = 'block';
+  log(`Starting synthesis of ${chunks.length} chunk(s)`);
   for (let i = 0; i < chunks.length; i++) {
-    progress.textContent = `Fetching audio ${i + 1} / ${chunks.length}...`;
+    const msg = `Fetching audio ${i + 1} / ${chunks.length}...`;
+    progress.textContent = msg;
+    log(msg);
     progressBar.value = i;
     buffers.push(await fetchMP3(chunks[i]));
     progressBar.value = i + 1;
   }
   progress.textContent = 'Combining...';
+  log('Combining audio');
   progressBar.value = progressBar.max;
   const blob = new Blob(buffers, { type: 'audio/mpeg' });
   const url = URL.createObjectURL(blob);
@@ -59,6 +76,7 @@ async function textToMP3(text, outputName = 'output.mp3') {
   dl.download = outputName;
   dl.style.display = 'inline-block';
   progress.textContent = 'Done!';
+  log('Finished.');
   progressBar.style.display = 'none';
 }
 
@@ -69,8 +87,12 @@ async function handleConvert() {
   const progressBar = document.getElementById('progressBar');
   progressBar.style.display = 'none';
   progressBar.value = 0;
+  const term = document.getElementById('terminal');
+  if (term) term.textContent = '';
   if (file) {
-    document.getElementById('progress').textContent = 'Extracting text from PDF...';
+    const msg = 'Extracting text from PDF...';
+    document.getElementById('progress').textContent = msg;
+    log(msg);
     text += '\n' + await extractTextFromPDF(file);
     outputName = file.name.replace(/\.pdf$/i, '.mp3');
   }
@@ -78,6 +100,7 @@ async function handleConvert() {
     alert('Please upload a PDF or enter some text.');
     return;
   }
+  log('Starting conversion');
   await textToMP3(text, outputName);
 }
 
