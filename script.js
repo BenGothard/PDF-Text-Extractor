@@ -34,7 +34,7 @@ async function fetchMP3(chunk) {
   return new Uint8Array(await resp.arrayBuffer());
 }
 
-async function textToMP3(text) {
+async function textToMP3(text, outputName = 'output.mp3') {
   const chunks = chunkText(text);
   const buffers = [];
   const progress = document.getElementById('progress');
@@ -56,6 +56,7 @@ async function textToMP3(text) {
   document.getElementById('audio').src = url;
   const dl = document.getElementById('downloadLink');
   dl.href = url;
+  dl.download = outputName;
   dl.style.display = 'inline-block';
   progress.textContent = 'Done!';
   progressBar.style.display = 'none';
@@ -64,18 +65,20 @@ async function textToMP3(text) {
 async function handleConvert() {
   const file = document.getElementById('pdfFile').files[0];
   let text = document.getElementById('textInput').value.trim();
+  let outputName = 'output.mp3';
   const progressBar = document.getElementById('progressBar');
   progressBar.style.display = 'none';
   progressBar.value = 0;
   if (file) {
     document.getElementById('progress').textContent = 'Extracting text from PDF...';
     text += '\n' + await extractTextFromPDF(file);
+    outputName = file.name.replace(/\.pdf$/i, '.mp3');
   }
   if (!text) {
     alert('Please upload a PDF or enter some text.');
     return;
   }
-  await textToMP3(text);
+  await textToMP3(text, outputName);
 }
 
 document.getElementById('convertBtn').addEventListener('click', handleConvert);

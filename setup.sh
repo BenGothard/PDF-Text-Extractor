@@ -24,6 +24,14 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     else
         echo "ffmpeg already installed."
     fi
+elif command -v apt-get &> /dev/null; then
+    if ! command -v ffmpeg &> /dev/null; then
+        echo "Installing ffmpeg with apt..."
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+    else
+        echo "ffmpeg already installed."
+    fi
 fi
 
 echo "Setup complete! Activate your environment with: source venv/bin/activate" 
