@@ -36,11 +36,6 @@ def check_and_install_dependencies() -> None:
         print("Dependencies installed successfully!")
 
 
-# Check dependencies before importing them
-check_and_install_dependencies()
-check_ffmpeg()
-
-
 def determine_tts_engine() -> str:
     """Determine which text-to-speech backend to use.
 
@@ -78,10 +73,11 @@ def determine_tts_engine() -> str:
     return "gtts"
 
 
-TTS_ENGINE = determine_tts_engine()
 
-from PyPDF2 import PdfReader  # noqa: E402
-from pydub import AudioSegment  # noqa: E402
+# These will be initialized in ``main`` after checking dependencies.
+TTS_ENGINE = None
+PdfReader = None
+AudioSegment = None
 
 
 def extract_text_from_pdf(pdf_path: Path) -> str:
@@ -236,7 +232,23 @@ def main() -> None:
         help="Path where the MP3 will be saved. Defaults to <pdf>.mp3",
     )
 
+    # Show help without triggering dependency installation
+    if any(arg in {"-h", "--help"} for arg in sys.argv[1:]):
+        parser.print_help()
+        return
+
     args = parser.parse_args()
+
+    # Dependencies and environment checks happen only for real runs
+    check_and_install_dependencies()
+    check_ffmpeg()
+
+    global TTS_ENGINE, PdfReader, AudioSegment
+    TTS_ENGINE = determine_tts_engine()
+    from PyPDF2 import PdfReader as _PdfReader  # type: ignore
+    from pydub import AudioSegment as _AudioSegment  # type: ignore
+    PdfReader = _PdfReader
+    AudioSegment = _AudioSegment
 
     pdf_path = args.pdf
     if pdf_path is None:
