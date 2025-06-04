@@ -47,9 +47,50 @@ function speakBrowser(text) {
     const rateInput = document.getElementById('rateRange');
     if (rateInput) utter.rate = parseFloat(rateInput.value);
     speechSynthesis.speak(utter);
-    return true;
+    return utter;
   }
-  return false;
+  return null;
+}
+
+async function captureSpeech(text, outputName) {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia || !window.MediaRecorder) {
+    return false;
+  }
+  const utter = speakBrowser(text);
+  if (!utter) return false;
+  try {
+    const stream = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: false });
+    const recorder = new MediaRecorder(stream);
+    const chunks = [];
+    recorder.ondataavailable = e => chunks.push(e.data);
+    const stopPromise = new Promise(resolve => {
+      recorder.onstop = () => resolve();
+    });
+    const speakPromise = new Promise(resolve => {
+      utter.onend = resolve;
+    });
+    recorder.start();
+    await speakPromise;
+    recorder.stop();
+    await stopPromise;
+    const blob = new Blob(chunks, { type: recorder.mimeType });
+    const url = URL.createObjectURL(blob);
+    document.getElementById('audio').style.display = 'block';
+    document.getElementById('audio').src = url;
+    const pb = document.getElementById('playbackControls');
+    if (pb) pb.style.display = 'flex';
+    const dl = document.getElementById('downloadLink');
+    dl.href = url;
+    const ext = recorder.mimeType.includes('mpeg') ? '.mp3' : '.webm';
+    dl.download = outputName.replace(/\.mp3$/i, ext);
+    dl.style.display = 'inline-block';
+    document.getElementById('progress').textContent = 'Done!';
+    log('Captured audio using browser speech synthesis.');
+    return true;
+  } catch (err) {
+    log(`Failed to capture browser audio: ${err}`);
+    return false;
+  }
 }
 
 function populateVoices() {
@@ -134,11 +175,9 @@ async function handleConvert() {
     return;
   }
   log('Starting conversion');
-  const spoken = speakBrowser(text);
-  if (!spoken) {
+  const captured = await captureSpeech(text, outputName);
+  if (!captured) {
     await textToMP3(text, outputName);
-  } else {
-    log('Used browser speech synthesis.');
   }
 }
 
