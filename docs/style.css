@@ -101,3 +101,13 @@ body.dark .terminal {
   min-width: 2em;
   text-align: right;
 }
+
+.instructions {
+  margin-top: 1em;
+  border: 1px solid #ccc;
+  padding: 0.5em;
+}
+
+body.dark .instructions {
+  border-color: #555;
+}
