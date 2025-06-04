@@ -184,7 +184,10 @@ async function handleConvert() {
   }
 }
 
-document.getElementById('convertBtn').addEventListener('click', handleConvert);
+const convertBtn = document.getElementById('convertBtn');
+if (convertBtn) {
+  convertBtn.addEventListener('click', handleConvert);
+}
 
 // Initialize theme toggle and restore saved preference
 document.addEventListener('DOMContentLoaded', () => {
