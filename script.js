@@ -105,6 +105,9 @@ function populateVoices() {
     opt.textContent = `${v.name} (${v.lang})`;
     select.appendChild(opt);
   });
+  let enIndex = voices.findIndex(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+  if (enIndex === -1) enIndex = 0;
+  select.value = String(enIndex);
 }
 
 async function fetchMP3(chunk) {
