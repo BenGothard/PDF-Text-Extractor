@@ -78,3 +78,7 @@ textarea {
 body.dark .terminal {
   background: #222;
 }
+
+#playbackControls {
+  margin-top: 0.5em;
+}

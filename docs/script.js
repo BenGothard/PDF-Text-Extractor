@@ -80,6 +80,8 @@ async function textToMP3(text, outputName = 'output.mp3') {
   const url = URL.createObjectURL(blob);
   document.getElementById('audio').style.display = 'block';
   document.getElementById('audio').src = url;
+  const pb = document.getElementById('playbackControls');
+  if (pb) pb.style.display = 'flex';
   const dl = document.getElementById('downloadLink');
   dl.href = url;
   dl.download = outputName;
@@ -133,5 +135,15 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.toggle('dark');
       localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
     });
+  }
+
+  const audio = document.getElementById('audio');
+  const playBtn = document.getElementById('playBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  if (playBtn && audio) {
+    playBtn.addEventListener('click', () => audio.play());
+  }
+  if (pauseBtn && audio) {
+    pauseBtn.addEventListener('click', () => audio.pause());
   }
 });
