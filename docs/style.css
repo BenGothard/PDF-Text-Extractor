@@ -32,6 +32,29 @@ body.dark button {
   gap: 0.5em;
 }
 
+.button-row {
+  display: flex;
+  gap: 0.5em;
+}
+
+.button-row button,
+.button-row .button-link {
+  flex: 1;
+  width: auto;
+}
+
+.button-link {
+  display: none;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  text-align: center;
+}
+
+body.dark .button-link {
+  border-color: #555;
+}
+
 textarea {
   min-height: 150px;
 }
