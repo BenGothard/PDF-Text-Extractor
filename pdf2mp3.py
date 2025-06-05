@@ -255,15 +255,35 @@ def main() -> None:
 
     pdf_path = args.pdf
     if pdf_path is None:
-        pdfs = list(Path(".").glob("*.pdf"))
-        if len(pdfs) == 1:
-            pdf_path = pdfs[0]
+        search_dirs = [Path(".")]
+        script_dir = Path(__file__).resolve().parent
+        if script_dir != Path(".").resolve():
+            search_dirs.append(script_dir)
+
+        pdfs: List[Path] = []
+        for d in search_dirs:
+            pdfs.extend(sorted(d.glob("*.pdf")))
+
+        # Remove duplicates while preserving order
+        seen = set()
+        unique_pdfs = []
+        for p in pdfs:
+            if p not in seen:
+                unique_pdfs.append(p)
+                seen.add(p)
+
+        if len(unique_pdfs) == 1:
+            pdf_path = unique_pdfs[0]
             print(f"Using detected PDF: {pdf_path}")
-        elif len(pdfs) == 0:
-            print("Error: No PDF found in the current folder. Please specify a file.")
+        elif len(unique_pdfs) == 0:
+            print(
+                "Error: No PDF found in the current or script folder. Please specify a file."
+            )
             sys.exit(1)
         else:
             print("Error: Multiple PDFs found. Please specify which one to use.")
+            for p in unique_pdfs:
+                print(f" - {p}")
             sys.exit(1)
 
     if not pdf_path.exists():
