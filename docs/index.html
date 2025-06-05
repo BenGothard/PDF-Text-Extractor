@@ -12,7 +12,7 @@
   <p>
     <strong>Listen:</strong> Use your browser's voice to listen to the text below.<br>
     <strong>Download:</strong> Save the extracted or pasted text as a .txt file.<br>
-    <strong>Want an MP3?</strong> Use the provided Python script (<code>pdf2mp3.py</code>) on your computer for downloadable audio using your native OS voices.
+    <strong>Want an MP3?</strong> Run <code>python server/app.py</code> and use this button, or run <code>pdf2mp3.py</code> locally for offline conversion.
   </p>
   <div class="uploader">
     <input type="file" id="pdfFile" accept="application/pdf">
@@ -34,8 +34,9 @@
 
   <div id="mp3Help" class="instructions">
     <h2>How to Generate an MP3</h2>
-    <ol>
-      <li>The project ZIP downloads automatically. Unzip it, then place your PDF in the folder.</li>
+      <ol>
+        <li>The project ZIP downloads automatically. Unzip it, then place your PDF in the folder.</li>
+        <li>You can also start the Flask service with <code>python server/app.py</code> and use the button above.</li>
       <li>
         Open your terminal or command prompt.
         <ul>

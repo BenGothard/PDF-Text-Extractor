@@ -159,28 +159,29 @@ async function textToMP3(text, outputName = 'output.mp3') {
 
 async function handleConvert() {
   const file = document.getElementById('pdfFile').files[0];
-  let text = document.getElementById('textInput').value.trim();
-  let outputName = 'output.mp3';
-  const progressBar = document.getElementById('progressBar');
-  progressBar.style.display = 'none';
-  progressBar.value = 0;
-  const term = document.getElementById('terminal');
-  if (term) term.textContent = '';
-  if (file) {
-    const msg = 'Extracting text from PDF...';
-    document.getElementById('progress').textContent = msg;
-    log(msg);
-    text += '\n' + await extractTextFromPDF(file);
-    outputName = file.name.replace(/\.pdf$/i, '.mp3');
-  }
-  if (!text) {
-    alert('Please upload a PDF or enter some text.');
+  if (!file) {
+    alert('Please select a PDF file.');
     return;
   }
-  log('Starting conversion');
-  const captured = await captureSpeech(text, outputName);
-  if (!captured) {
-    await textToMP3(text, outputName);
+  const progress = document.getElementById('progress');
+  progress.textContent = 'Uploading...';
+  const form = new FormData();
+  form.append('file', file);
+  try {
+    const resp = await fetch('/convert', { method: 'POST', body: form });
+    if (!resp.ok) throw new Error('Conversion failed');
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = file.name.replace(/\.pdf$/i, '.mp3');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    progress.textContent = 'Done!';
+  } catch (err) {
+    progress.textContent = `Error: ${err}`;
   }
 }
 
@@ -239,12 +240,7 @@ function setCmdPath() {
 
 const convertBtn = document.getElementById('convertBtn');
 if (convertBtn) {
-  convertBtn.addEventListener('click', () => {
-    downloadZip();
-    setCmdPath();
-    const help = document.getElementById('mp3Help');
-    if (help) help.style.display = 'block';
-  });
+  convertBtn.addEventListener('click', handleConvert);
 }
 
 // Initialize theme toggle and restore saved preference

@@ -3,3 +3,5 @@ pydub>=0.25.1
 setuptools>=65.0.0
 gTTS>=2.5.1
 pyttsx3>=2.90
+Flask>=2.0
+Flask-Cors>=3.0
