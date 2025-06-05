@@ -10,6 +10,7 @@ cd audiobook_maker
 bash setup.sh
 source venv/bin/activate
 python pdf2mp3.py my_document.pdf
+python server/app.py  # start the web service
 ```
 
 ### Super Simple Guide
@@ -107,6 +108,16 @@ https://<username>.github.io/audiobook_maker/
 If you're running locally without GitHub Pages, simply open `docs/index.html` in your browser.
 
 The page lets you **Extract PDF Text**, **Listen to Text**, and **Download Text**. Use the `pdf2mp3.py` script locally if you want an MP3 download. Browser playback uses the built‑in speech synthesis engine when available and falls back to Google's `translate.googleapis.com` service.
+
+## Flask Web Service
+
+A small Flask app exposes a `/convert` endpoint that takes a PDF upload and returns an MP3. Start it with:
+
+```bash
+python server/app.py
+```
+
+Then open `docs/index.html` and use the **Download MP3** button to send your PDF to the server. FFmpeg must be installed and the Python dependencies in `requirements.txt` (including `Flask` and `Flask-Cors`) should be available.
 
 The voice selector now defaults to the first available English voice when the web page loads.
 
