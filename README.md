@@ -23,6 +23,7 @@ Follow these steps to turn a PDF into an MP3. Make sure Python and FFmpeg are in
    You can run this command from any folder—the script checks the directory
    containing `pdf2mp3.py` for your PDF.
 5. Wait a bit. You'll see an MP3 with the same name as your PDF. Double-click it to listen.
+6. If you get a "No PDF found" error, make sure your document is in that folder or run `python pdf2mp3.py your_file.pdf`.
 
 I was frustrated when I wanted to listen to the Deep Research results within ChatGPT, since all of the "free text to speech" providers severely capped my characters or hours. So now we can all listen to whatever we want.
 
