@@ -19,11 +19,10 @@ Follow these steps to turn a PDF into an MP3. Make sure Python and FFmpeg are in
 1. Click **Code** and choose **Download ZIP** to get the files, or use the page's "Download MP3" button to generate the archive in your browser.
 2. Open the ZIP you downloaded. A new folder appears. Move your PDF into this folder.
 3. Open Command Prompt on Windows or Terminal on Mac and Linux.
-4. Type `cd `, drag the folder into the window, and press **Enter**.
-5. Type `python pdf2mp3.py` and press **Enter**. The script finds the PDF for you.
-   You can also run `python /path/to/pdf2mp3.py` from anywhere—it will check
-   the folder containing the script for your PDF.
-6. Wait a bit. You'll see an MP3 with the same name as your PDF. Double-click it to listen.
+4. Run `python ~/Downloads/audiobook_maker/pdf2mp3.py` and press **Enter**.
+   You can run this command from any folder—the script checks the directory
+   containing `pdf2mp3.py` for your PDF.
+5. Wait a bit. You'll see an MP3 with the same name as your PDF. Double-click it to listen.
 
 I was frustrated when I wanted to listen to the Deep Research results within ChatGPT, since all of the "free text to speech" providers severely capped my characters or hours. So now we can all listen to whatever we want.
 
