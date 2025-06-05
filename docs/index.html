@@ -3,60 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF/Text to MP3</title>
+  <title>PDF/Text to Speech</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <button id="themeToggle" class="theme-toggle">Toggle Dark Mode</button>
-  <h1>PDF/Text to Speech & Text Downloader</h1>
-  <p>
-    <strong>Listen:</strong> Use your browser's voice to listen to the text below.<br>
-    <strong>Download:</strong> Save the extracted or pasted text as a .txt file.<br>
-    <strong>Want an MP3?</strong> Run <code>python server/app.py</code> and use this button, or run <code>pdf2mp3.py</code> locally for offline conversion.
-  </p>
+  <h1>PDF/Text to Speech</h1>
   <div class="uploader">
     <input type="file" id="pdfFile" accept="application/pdf">
-    <textarea id="textInput" placeholder="Or paste text here..."></textarea>
+    <textarea id="textInput" placeholder="Paste text or extract from PDF..."></textarea>
     <div class="button-row">
       <button id="extractBtn">Extract PDF Text</button>
-      <button id="listenBtn">Listen to Text</button>
-      <button id="downloadTextBtn">Download Text</button>
-      <button id="convertBtn">Download MP3</button>
+      <button id="listenBtn">Listen</button>
     </div>
   </div>
-  <div id="progress"></div>
-  <pre id="terminal" class="terminal"></pre>
-  <div id="listenControls" class="button-row" style="display:none;">
-    <button id="pauseListenBtn">Pause</button>
-    <button id="resumeListenBtn">Resume</button>
-    <button id="stopListenBtn">Stop</button>
+  <div id="controls" class="button-row" style="display:none;">
+    <button id="pauseBtn">Pause</button>
+    <button id="resumeBtn">Resume</button>
+    <button id="stopBtn">Stop</button>
   </div>
-
-  <div id="mp3Help" class="instructions">
-    <h2>How to Generate an MP3</h2>
-      <ol>
-        <li>The project ZIP downloads automatically. Unzip it, then place your PDF in the folder.</li>
-        <li>You can also start the Flask service with <code>python server/app.py</code> and use the button above.</li>
-      <li>
-        Open your terminal or command prompt.
-        <ul>
-          <li><strong>Windows:</strong> launch <em>Command Prompt</em> from the Start menu.</li>
-          <li><strong>macOS:</strong> open <em>Terminal</em> from <em>Applications &gt; Utilities</em> or use Spotlight.</li>
-          <li><strong>Linux:</strong> press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> or find <em>Terminal</em> in your applications menu.</li>
-        </ul>
-      </li>
-      <li>
-        Run <code id="cmdText">python ~/Downloads/audiobook_maker/pdf2mp3.py</code>
-        <button id="copyCmdBtn" type="button">Copy</button>.
-        This command works from any folder because the script looks for your PDF
-        in the same directory as <code>pdf2mp3.py</code>.
-      </li>
-      <li>The script will find the PDF and create an MP3 for you. When it finishes, the file automatically downloads.</li>
-      <li>If you see "No PDF found," check that your document is in the folder or run <code>python pdf2mp3.py your_file.pdf</code>.</li>
-    </ol>
-    <p>No need to look anywhere else&mdash;this one command makes your MP3.</p>
-  </div>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
   <script src="script.js"></script>
