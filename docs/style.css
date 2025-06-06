@@ -56,3 +56,15 @@ body.dark-mode button {
 #controls {
   margin-top: 0.5em;
 }
+
+.terminal {
+  background-color: #000;
+  color: #0f0;
+  font-family: monospace;
+  padding: 0.5em;
+  margin-top: 1em;
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  border-radius: 0.25em;
+}
