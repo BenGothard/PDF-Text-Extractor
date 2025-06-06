@@ -1,3 +1,6 @@
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
 async function extractTextFromPDF(file) {
   const bytes = new Uint8Array(await file.arrayBuffer());
   const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
@@ -45,8 +48,13 @@ document.getElementById('extractBtn').addEventListener('click', async () => {
     alert('Please select a PDF file.');
     return;
   }
-  const text = await extractTextFromPDF(file);
-  document.getElementById('textInput').value = text;
+  try {
+    const text = await extractTextFromPDF(file);
+    document.getElementById('textInput').value = text;
+  } catch (err) {
+    console.error(err);
+    alert('Failed to extract text from PDF.');
+  }
 });
 
 document.getElementById('listenBtn').addEventListener('click', () => {
@@ -61,3 +69,8 @@ document.getElementById('listenBtn').addEventListener('click', () => {
 document.getElementById('pauseBtn').addEventListener('click', pauseSpeech);
 document.getElementById('resumeBtn').addEventListener('click', resumeSpeech);
 document.getElementById('stopBtn').addEventListener('click', stopSpeech);
+
+// Toggle light/dark mode
+document.getElementById('themeToggle').addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+});
