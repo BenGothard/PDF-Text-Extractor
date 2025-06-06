@@ -5,10 +5,29 @@ body {
   padding: 1em;
 }
 
+body.dark-mode {
+  background-color: #121212;
+  color: #eee;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode button {
+  background-color: #333;
+  border-color: #555;
+  color: #eee;
+}
+
+.theme-toggle {
+  margin-bottom: 1em;
+  float: right;
+}
+
 .uploader {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+  margin-top: 1em;
 }
 
 .uploader input,
@@ -19,6 +38,10 @@ body {
   padding: 0.5em;
   border-radius: 0.25em;
   border: 1px solid #ccc;
+}
+
+.uploader textarea {
+  min-height: 10em;
 }
 
 .button-row {
