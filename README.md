@@ -1,4 +1,4 @@
-# Browser PDF/Text Reader
+# PDF Text Extractor
 
 This repository contains a lightweight web page that reads text aloud using your browser's native speech synthesis.
 
@@ -9,4 +9,5 @@ This repository contains a lightweight web page that reads text aloud using your
 3. Click **Extract PDF Text** to load the PDF and **Listen** to hear it spoken.
 4. Use **Pause**, **Resume** and **Stop** to control playback.
 
-That's it!
+You can also use the command-line script `pdf_text_extractor.py` to convert a PDF to an MP3 audiobook.
+

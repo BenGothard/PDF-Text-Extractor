@@ -6,16 +6,16 @@ from pathlib import Path
 from flask import Flask, request, send_file, after_this_request
 from flask_cors import CORS
 
-import pdf2mp3
+import pdf_text_extractor
 
-pdf2mp3.check_and_install_dependencies()
-pdf2mp3.check_ffmpeg()
+pdf_text_extractor.check_and_install_dependencies()
+pdf_text_extractor.check_ffmpeg()
 
-pdf2mp3.TTS_ENGINE = pdf2mp3.determine_tts_engine()
+pdf_text_extractor.TTS_ENGINE = pdf_text_extractor.determine_tts_engine()
 from PyPDF2 import PdfReader as _PdfReader  # type: ignore
 from pydub import AudioSegment as _AudioSegment  # type: ignore
-pdf2mp3.PdfReader = _PdfReader
-pdf2mp3.AudioSegment = _AudioSegment
+pdf_text_extractor.PdfReader = _PdfReader
+pdf_text_extractor.AudioSegment = _AudioSegment
 
 app = Flask(__name__)
 CORS(app)
@@ -31,13 +31,13 @@ def convert():
         uploaded.save(pdf_tmp.name)
         pdf_path = Path(pdf_tmp.name)
 
-    text = pdf2mp3.extract_text_from_pdf(pdf_path)
-    text = pdf2mp3.clean_text(text)
+    text = pdf_text_extractor.extract_text_from_pdf(pdf_path)
+    text = pdf_text_extractor.clean_text(text)
 
     mp3_tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.mp3')
     mp3_tmp.close()
     mp3_path = Path(mp3_tmp.name)
-    pdf2mp3.text_to_speech(text, mp3_path)
+    pdf_text_extractor.text_to_speech(text, mp3_path)
 
     @after_this_request
     def cleanup(response):
