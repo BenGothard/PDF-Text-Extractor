@@ -277,8 +277,8 @@ def main() -> None:
             print(f"Using detected PDF: {pdf_path}")
         elif len(unique_pdfs) == 0:
             print(
-                "Error: No PDF found. Move your document next to pdf2mp3.py "
-                "or run 'python pdf2mp3.py <file>'."
+                "Error: No PDF found. Move your document next to pdf_text_extractor.py "
+                "or run 'python pdf_text_extractor.py <file>'."
             )
             sys.exit(1)
         else:
