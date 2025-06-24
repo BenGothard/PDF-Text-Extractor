@@ -2,9 +2,16 @@ from __future__ import annotations
 
 import tempfile
 from pathlib import Path
+import sys
 
 from flask import Flask, request, send_file, after_this_request
 from flask_cors import CORS
+
+# Ensure the repository root is on the Python path so that this script can be
+# executed directly from the ``server`` directory or via ``python server/app.py``
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 import pdf_text_extractor
 
